@@ -19,30 +19,36 @@ bool CSocketMessage::isValid() const
   return ( socket_message != INVALID_SOCKET );
 }
 
-void CSocketMessage::sendMessage(const std::int32_t v) const
-{
-  assert( isValid() );
-
-  if (isValid()) {
-
-  }
-  // TODO: return
-}
+//void CSocketMessage::sendMessage(const std::int32_t v) const
+//{
+//  assert( isValid() );
+//
+//  if (isValid()) {
+//
+//  }
+//  // TODO: return
+//}
 
 void CSocketMessage::sendMessage(const std::string& s) const
 {
   assert( isValid() );
 
   if (isValid()) {
-    rawSend(s.c_str(), (int)s.size());
+    const std::int32_t messLen = s.size();
+    const auto res1 = rawSend( reinterpret_cast<const char*>( &messLen ), sizeof( std::int32_t ) );
+    assert(res1 == sizeof( std::int32_t ) );
+    if (res1 > 0) {
+      const auto res2 = rawSend(s.c_str(), (int)s.size());
+      assert(res2 == s.size());
+    }
   }
-  // TODO: return
+  // TODO: return error codes
 }
 
-int CSocketMessage::recvMessage(char& c)
-{
-  return rawRecv(&c, 1);
-}
+//int CSocketMessage::recvMessage(char& c)
+//{
+//  return rawRecv(&c, 1);
+//}
 
 int CSocketMessage::rawSend(const char* const buff, const int buffLen) const
 {

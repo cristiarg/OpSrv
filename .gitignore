@@ -34,4 +34,8 @@ ipch
 
 # Visual Sudio .vs stuf that is not needed
 v15
+*.sqlite
+
+# vim
+*.swp
 

@@ -8,7 +8,7 @@ add_executable (OpSrv
     "WSAInitializer.cpp" "WSAInitializer.h"
     "SocketListen.cpp" "SocketListen.h"
     "SocketMessage.cpp" "SocketMessage.h"
-    "OpSrv.cpp" "OpSrv.h")
+    "OpSrv.cpp")
 
 if(WIN32)
   target_link_libraries(OpSrv wsock32 ws2_32)

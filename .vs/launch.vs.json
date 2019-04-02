@@ -1,0 +1,17 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "OpSrv.exe",
+      "name": "OpSrv.exe"
+    },
+    {
+      "type": "native",
+      "name": "C:\\Temp\\SpringSchool2019\\OpSrv",
+      "project": ""
+    }
+  ]
+}

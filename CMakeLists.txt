@@ -8,6 +8,7 @@ add_executable (OpSrv
     "WSAInitializer.cpp" "WSAInitializer.h"
     "SocketListen.cpp" "SocketListen.h"
     "Protocol.cpp" "Protocol.h"
+    "MessageDecoder.cpp" "MessageDecoder.h"
     "OpSrv.cpp")
 
 add_definitions(/std:c++17)

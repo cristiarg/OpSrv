@@ -131,7 +131,7 @@ EStatus CProtocol::recvMessage(std::string& str)
     // recv message length
     //
     std::uint32_t messLen { static_cast< std::uint32_t >( -1 ) }; // intentional
-    const auto res1 = rawRecv( reinterpret_cast<char*>( messLen ), sizeof( std::uint32_t ) );
+    const auto res1 = rawRecv( reinterpret_cast<char*>( &messLen ), sizeof( std::uint32_t ) );
     if (res1 == EStatus::eOK) {
       // recv message
       //

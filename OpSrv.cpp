@@ -6,15 +6,6 @@
 #include <sstream>
 #include <cassert>
 
-void decodeMessage(const std::string& mess)
-{
-}
-
-void scen1(UXSocketMessage& socketMessage)
-{
-  // socketMessage ...
-}
-
 int main()
 {
   CWSAInitializer wsaInitializer;

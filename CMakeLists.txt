@@ -7,7 +7,7 @@ cmake_minimum_required (VERSION 3.8)
 add_executable (OpSrv
     "WSAInitializer.cpp" "WSAInitializer.h"
     "SocketListen.cpp" "SocketListen.h"
-    "SocketMessage.cpp" "SocketMessage.h"
+    "Protocol.cpp" "Protocol.h"
     "OpSrv.cpp")
 
 add_definitions(/std:c++17)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SocketMessage.h"
+#include "Protocol.h"
 
 #include <Ws2tcpip.h>
 
@@ -10,7 +10,7 @@ public:
   ~CSocketListen();
 
   bool openBindListen();
-  UXSocketMessage accept();
+  UXProtcol accept();
 
 private:
   const int port;

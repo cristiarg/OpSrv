@@ -1,27 +1,27 @@
-#include "SocketMessage.h"
+#include "Protocol.h"
 
 #include <cassert>
 #include <sstream>
 //#include <limits>
 
-CSocketMessage::CSocketMessage( SOCKET s )
+CProtocol::CProtocol( SOCKET s )
     : socket_message { s }
 {
 }
 
-CSocketMessage::~CSocketMessage()
+CProtocol::~CProtocol()
 {
   if ( isValid() ) {
    closesocket(socket_message); 
   }
 }
 
-bool CSocketMessage::isValid() const
+bool CProtocol::isValid() const
 {
   return ( socket_message != INVALID_SOCKET );
 }
 
-EStatus CSocketMessage::sendOk() const
+EStatus CProtocol::sendOk() const
 {
   std::stringstream ss;
   ss << 'K';
@@ -31,12 +31,12 @@ EStatus CSocketMessage::sendOk() const
   return sendString( strMess );
 }
 
-EStatus CSocketMessage::sendValue(const int val) const
+EStatus CProtocol::sendValue(const int val) const
 {
   return sendMnemonicWithValue('V', val);
 }
 
-EStatus CSocketMessage::sendOperator(const char op) const
+EStatus CProtocol::sendOperator(const char op) const
 {
   std::stringstream ss;
   ss << "O " << op;
@@ -46,12 +46,12 @@ EStatus CSocketMessage::sendOperator(const char op) const
   return sendString( strMess );
 }
 
-EStatus CSocketMessage::sendResult(const int val) const
+EStatus CProtocol::sendResult(const int val) const
 {
   return sendMnemonicWithValue('R', val);
 }
 
-EStatus CSocketMessage::sendMnemonicWithValue(const char mnem, const int val) const
+EStatus CProtocol::sendMnemonicWithValue(const char mnem, const int val) const
 {
   std::stringstream ss;
   ss << mnem << ' ' << val;
@@ -61,7 +61,7 @@ EStatus CSocketMessage::sendMnemonicWithValue(const char mnem, const int val) co
   return sendString( strMess );
 }
 
-EStatus CSocketMessage::sendError(const std::string& str) const
+EStatus CProtocol::sendError(const std::string& str) const
 {
   std::stringstream ss;
   ss << "E " << str;
@@ -71,7 +71,7 @@ EStatus CSocketMessage::sendError(const std::string& str) const
   return sendString(strMess);
 }
 
-EStatus CSocketMessage::sendString(const std::string& str) const
+EStatus CProtocol::sendString(const std::string& str) const
 {
   assert( isValid() );
   if (isValid()) {
@@ -94,7 +94,7 @@ EStatus CSocketMessage::sendString(const std::string& str) const
   }
 }
 
-EStatus CSocketMessage::rawSend(const char* const buff, const int buffLen) const
+EStatus CProtocol::rawSend(const char* const buff, const int buffLen) const
 {
   assert( isValid() );
   if (isValid()) {
@@ -124,7 +124,7 @@ EStatus CSocketMessage::rawSend(const char* const buff, const int buffLen) const
   }
 }
 
-EStatus CSocketMessage::recvMessage(std::string& str)
+EStatus CProtocol::recvMessage(std::string& str)
 {
   assert( isValid() );
   if (isValid()) {
@@ -148,7 +148,7 @@ EStatus CSocketMessage::recvMessage(std::string& str)
   }
 }
 
-EStatus CSocketMessage::rawRecv(char* const buff, const int buffLen)
+EStatus CProtocol::rawRecv(char* const buff, const int buffLen)
 {
   char* pBuffer = buff;
   int nRecvCount = 0;

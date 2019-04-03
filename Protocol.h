@@ -19,10 +19,10 @@ enum class EStatus {
     , eUnknownError
 };
 
-class CSocketMessage final {
+class CProtocol final {
 public:
-  CSocketMessage( SOCKET s );
-  ~CSocketMessage();
+  CProtocol( SOCKET s );
+  ~CProtocol();
 
   bool isValid() const;
 
@@ -45,4 +45,4 @@ private:
   SOCKET socket_message;
 };
 
-using UXSocketMessage = std::unique_ptr< CSocketMessage >;
+using UXProtcol = std::unique_ptr< CProtocol >;

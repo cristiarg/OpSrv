@@ -76,7 +76,7 @@ bool CSocketListen::openBindListen()
   return true;
 }
 
-UXSocketMessage CSocketListen::accept()
+UXProtcol CSocketListen::accept()
 {
   struct sockaddr_in from_addr;
   int from_addr_len = sizeof( from_addr ); // cannot be const
@@ -84,14 +84,14 @@ UXSocketMessage CSocketListen::accept()
   if (socket_message == INVALID_SOCKET) {
     fprintf(stderr, "accept() error %d\n", WSAGetLastError());
     WSACleanup();
-    return std::make_unique< CSocketMessage >( INVALID_SOCKET );
+    return std::make_unique< CProtocol >( INVALID_SOCKET );
   }
   else {
     char str[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &(from_addr.sin_addr), str, INET_ADDRSTRLEN);
 
     printf("accepted connection from %s, port %d\n", /*inet_ntoa(from_addr.sin_addr)*/ str, htons(from_addr.sin_port));
-    return std::make_unique< CSocketMessage >( socket_message );
+    return std::make_unique< CProtocol >( socket_message );
   }
 }
 

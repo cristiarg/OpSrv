@@ -4,6 +4,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <cassert>
+
+void decodeMessage(const std::string& mess)
+{
+}
+
+void scen1(UXSocketMessage& socketMessage)
+{
+  // socketMessage ...
+}
 
 int main()
 {
@@ -14,6 +24,7 @@ int main()
   if (socketListen.openBindListen()) {
     // blocking
     auto socket_message = socketListen.accept();
+    assert( socket_message->isValid() );
 
     //int recvLen { 1 };
     //while (recvLen > 0) {
@@ -28,16 +39,28 @@ int main()
     //  }
     //}
 
-    int messageIndex { 1 };
-    while( true ) {
-      std::stringstream ss;
-      ss << "Message " << messageIndex << " from server";
-      socket_message->sendMessage(ss.str());
-      messageIndex++;
+    const std::string enter{ "\r\n" };
+
+    int messageIndex { 100 };
+    EStatus res { EStatus::eOK };
+    while( res == EStatus::eOK ) {
+      std::cout << "Server: sending " << messageIndex << std::endl;
+      //std::stringstream ss;
+      //ss << "Message " << messageIndex << " from server";
+      res = socket_message->sendOk();
+      res = socket_message->sendString(enter);
+      res = socket_message->sendValue(messageIndex);
+      res = socket_message->sendString(enter);
+      res = socket_message->sendOperator('*');
+      res = socket_message->sendString(enter);
+      res = socket_message->sendResult(messageIndex);
+      res = socket_message->sendString(enter);
+      res = socket_message->sendError("Some random error");
+      res = socket_message->sendString(enter);
+      messageIndex--;
+      getchar();
     }
   }
-
-  //sp_GenericEndlessTCPStreamedSocketClient();
 
 	return 0;
 }

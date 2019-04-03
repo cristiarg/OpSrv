@@ -10,6 +10,8 @@ add_executable (OpSrv
     "SocketMessage.cpp" "SocketMessage.h"
     "OpSrv.cpp")
 
+add_definitions(/std:c++17)
+
 if(WIN32)
   target_link_libraries(OpSrv wsock32 ws2_32)
 endif()

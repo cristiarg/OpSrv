@@ -36,6 +36,9 @@ ipch
 v15
 *.sqlite
 
-# vim
+# vim files
 *.swp
+
+# WinMerge files
+*.bak
 

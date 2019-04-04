@@ -9,6 +9,7 @@ add_executable (OpSrv
     "SocketListen.cpp" "SocketListen.h"
     "Protocol.cpp" "Protocol.h"
     "MessageDecoder.cpp" "MessageDecoder.h"
+    "ServerLogic.cpp" "ServerLogic.h"
     "OpSrv.cpp")
 
 add_definitions(/std:c++17)

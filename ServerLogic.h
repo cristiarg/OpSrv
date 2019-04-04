@@ -6,6 +6,11 @@
 #include <vector>
 
 class CServerLogic {
+  enum class EComputeResult {
+      eAllRight
+    , eOverflow
+    , eDivByZero
+  };
 public:
   CServerLogic(CProtocol& p);
 
@@ -14,7 +19,7 @@ public:
 private:
   void clearState();
 
-  bool compute(CMessageDecoder& dec, int& res);
+  EComputeResult compute(CMessageDecoder& dec, int& res);
 
 private:
   std::vector< int > opVec;

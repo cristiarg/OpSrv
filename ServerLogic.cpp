@@ -40,16 +40,27 @@ void CServerLogic::execute()
             clearState();
           }
           else {
-            int res { 0 };
-            const auto b = compute(dec, res);
-            if (b) {
-              proto.sendResult(res);
-              clearState();
+            int computedValue { 0 };
+            const auto res = compute(dec, computedValue);
+            switch (res) {
+              case EComputeResult::eAllRight : {
+                proto.sendResult(computedValue);
+                break;
+              }
+              case EComputeResult::eDivByZero : {
+                proto.sendError("Error performing computation. Division by zero. State flushed.");
+                break;
+              }
+              case EComputeResult::eOverflow : {
+                proto.sendError("Error performing computation. Overflow or underflow. State flushed.");
+                break;
+              }
+              
+              default:
+                assert("EComputeResult - other enum type is not implemented" == nullptr);
+                break;
             }
-            else {
-              proto.sendError("Error performing computation. Overflow or division by zero. State flushed.");
-              clearState();
-            }
+            clearState();
           }
           break;
         }
@@ -59,7 +70,6 @@ void CServerLogic::execute()
         }
         case EMessageType::eOK: {
           assert( "EMessageType::eOK - not implemented on the server" == nullptr );
-//return nRecvCount;
           break;
         }
         case EMessageType::eError: {
@@ -85,7 +95,7 @@ void CServerLogic::clearState()
   opVec.resize(0);
 }
 
-bool CServerLogic::compute(CMessageDecoder& dec, int& res)
+CServerLogic::EComputeResult CServerLogic::compute(CMessageDecoder& dec, int& res)
 {
   switch (dec.getOperation()) {
     case EOperation::eNone: {
@@ -97,16 +107,16 @@ bool CServerLogic::compute(CMessageDecoder& dec, int& res)
       const int resInt { static_cast< int >( resLongLong ) };
       if (resLongLong == resInt) {
         res = resInt;
-        return true;
+        return EComputeResult::eAllRight;
       }
       else {
-        return false;
+        return EComputeResult::eOverflow;
       }
       break;
     }
     case EOperation::eDiff: {
       res = opVec[0] - opVec[1];
-      return true;
+      return EComputeResult::eAllRight;
       break;
     }
     case EOperation::eMulti: {
@@ -114,20 +124,20 @@ bool CServerLogic::compute(CMessageDecoder& dec, int& res)
       const int resInt { static_cast< int >( resLongLong ) };
       if (resLongLong == resInt) {
         res = resInt;
-        return true;
+        return EComputeResult::eAllRight;
       }
       else {
-        return false;
+        return EComputeResult::eOverflow;
       }
       break;
     }
     case EOperation::eDiv: {
       if (opVec[1] == 0) {
-        return false;
+        return EComputeResult::eDivByZero;
       }
       else {
         res = opVec[0] / opVec[1];
-        return true;
+        return EComputeResult::eAllRight;
       }
       break;
     }
@@ -137,20 +147,20 @@ bool CServerLogic::compute(CMessageDecoder& dec, int& res)
       const int resInt { static_cast< int >( resLongLong ) };
       if (resDouble == resInt) {
         res = resInt;
-        return true;
+        return EComputeResult::eAllRight;
       }
       else {
-        return false;
+        return EComputeResult::eOverflow;
       }
       break;
     }
     case EOperation::eMod: {
       if (opVec[1] == 0) {
-        return false;
+        return EComputeResult::eDivByZero;
       }
       else {
         res = opVec[0] % opVec[1];
-        return true;
+        return EComputeResult::eAllRight;
       }
       break;
     }
